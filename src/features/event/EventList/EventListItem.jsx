@@ -34,9 +34,6 @@ class EventListItem extends Component {
                         {event.attendees.map(attendee =>(
                         <EventListAttendee key={attendee.id} attendee={attendee} />    
                         ))}
-                        
-                     
-                        
                       </List>
                     </Segment>
                     <Segment clearing>
