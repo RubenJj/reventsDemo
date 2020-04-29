@@ -59,17 +59,31 @@ const eventsFromDashboard = [
 class EventDashboard extends Component {
     state = {
         events: eventsFromDashboard,
-        isOpen: false
+        isOpen: false,
+        selectedEvent: null
     };
 
-    handleIsOpenToggle = () => {
-        this.setState(({isOpen}) => ({
-            isOpen: !isOpen
-        }))
-    };
+    // handleIsOpenToggle = () => {
+    //     this.setState(({isOpen}) => ({
+    //         isOpen: !isOpen
+    //     }))
+    // };
 
+    handleCreateFormOpen =() => {
+      this.setState({
+        isOpen: true,
+        selectedEvent: null
+      })
+    }
 
-    handleCreateEvent = (newEvent) => {
+    handeFormCancel =() => {
+
+      this.setState({
+        isOpen: false,
+       
+      })
+    }
+    handleCreateEvent = newEvent => {
       newEvent.id = cuid();
       newEvent.hostPhotoURL = '/assets/user.png';
       
@@ -79,22 +93,31 @@ class EventDashboard extends Component {
     }))
   }
 
+  handleSelectEvent = (event) =>{
+    this.setState({
+      selectedEvent: event,
+      isOpen: true
+    })
+  }
+
     render() {
-        const {events, isOpen} = this.state;
+        const {events, isOpen, selectedEvent } = this.state;
         return (
             <Grid>
                 <GridColumn width={10}>
-                    <EventList events={events}/>
+                    <EventList events={events} selectedEvent={this.handleSelectEvent} />
                 </GridColumn>
                 <GridColumn width={6}>
                     <Button 
-                      onClick ={this.handleIsOpenToggle} 
-                      positive content='Create Event'/>
+                      onClick ={this.handleCreateFormOpen} 
+                      positive 
+                      content='Create Event'/>
                     {isOpen && 
                       <EventForm
+                      selectedEvent={selectedEvent}
                       //Add new forms created by the create form
                       createEvent={this.handleCreateEvent}
-                      cancelFormOpen={this.handleIsOpenToggle}
+                      cancelFormOpen={this.handleFormCancel}
                       />
                     }
                     
